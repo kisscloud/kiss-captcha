@@ -9,9 +9,9 @@ import output.ResultOutput;
 public interface TwoFactorCode {
 
     @GetMapping("/twoFactorCode/generate")
-    ResultOutput GenerateTwoFactorCode(String label, String issuer, String secret);
+    ResultOutput GenerateTwoFactorCode(String issuer, String label, String secret);
 
     @GetMapping("/twoFactorCode/validate")
-    ResultOutput ValidateTwoFactorCode(String secret, String code, Boolean once);
+    ResultOutput ValidateTwoFactorCode(String secret, Integer code, Boolean once);
 
 }
