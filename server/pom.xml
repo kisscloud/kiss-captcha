@@ -13,11 +13,6 @@
 
     <dependencies>
         <dependency>
-            <artifactId>kiss-captcha</artifactId>
-            <groupId>com.kiss</groupId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <artifactId>client</artifactId>
             <groupId>com.kiss</groupId>
             <version>1.0-SNAPSHOT</version>
