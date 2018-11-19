@@ -38,7 +38,7 @@ public class TwoFactorCodeController implements TwoFactorCode {
     @Override
     @ApiOperation(value = "生成谷歌验证码")
     public ResultOutput GenerateTwoFactorCode(@RequestParam("issuer") String issuer, @RequestParam("label") String label, String secret) {
-        label = label.replace(" ", "%20");
+
         return ResultOutputUtil.success(getOtpAuthTotpURL(issuer, label, secret));
     }
 
