@@ -1,6 +1,7 @@
 package com.kiss.captcha.client;
 
 import com.kiss.captcha.output.ImageCodeOutput;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,4 +14,7 @@ public interface ImageCode {
 
     @GetMapping("/imageCode/validate")
     Boolean ValidateImageCode(@RequestParam("token") String token, @RequestParam("code") String code);
+
+    @DeleteMapping("/imageCode/clear")
+    void clearImageCode(String token);
 }

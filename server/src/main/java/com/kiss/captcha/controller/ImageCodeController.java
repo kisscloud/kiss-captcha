@@ -81,7 +81,7 @@ public class ImageCodeController implements ImageCode {
 
         ImageCodeOutput imageCodeOutput = new ImageCodeOutput();
         imageCodeOutput.setImage(captchaBase64);
-        imageCodeOutput.setToken(CryptUtil.uuid());
+        imageCodeOutput.setToken(token);
 
         return imageCodeOutput;
     }
@@ -92,6 +92,11 @@ public class ImageCodeController implements ImageCode {
         String redisCode = stringRedisTemplate.opsForValue().get(token);
 
         return redisCode != null && redisCode.equals(code);
+    }
+
+    @Override
+    public void clearImageCode(String token) {
+        stringRedisTemplate.delete(token);
     }
 
 }
