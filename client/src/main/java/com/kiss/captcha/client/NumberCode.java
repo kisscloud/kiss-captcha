@@ -14,8 +14,8 @@ public interface NumberCode {
     NumberCodeOutput GenerateNumberCode(String scene, Integer len, Integer expired) throws NoSuchAlgorithmException;
 
     @GetMapping("/numberCode/validate")
-    Boolean ValidateNumberCode(String scene, String token, String code);
+    Boolean ValidateNumberCode(String token, String code);
 
     @DeleteMapping("/numberCode/clear")
-    Void ClearNumberCode(String token);
+    void ClearNumberCode(String token);
 }

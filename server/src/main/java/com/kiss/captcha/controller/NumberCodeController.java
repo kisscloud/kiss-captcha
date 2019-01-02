@@ -48,8 +48,7 @@ public class NumberCodeController implements NumberCode {
         NumberCodeOutput numberCodeOutput = new NumberCodeOutput();
 
         try {
-            MessageDigest md;
-            md = MessageDigest.getInstance("MD5");
+            MessageDigest md = MessageDigest.getInstance("MD5");
             md.update((scene + uuid).getBytes());
             numberCodeOutput.setCode(String.valueOf(code));
             numberCodeOutput.setToken(new BigInteger(1, md.digest()).toString(16));
@@ -63,14 +62,14 @@ public class NumberCodeController implements NumberCode {
     /**
      * 校验数字验证码
      *
-     * @param scene 使用场景，可使用客户端唯一ID
      * @param token 验证码令牌
      * @param code  验证码
      */
     @Override
     @ApiOperation(value = "校验数字验证码")
-    public Boolean ValidateNumberCode(String scene, String token, String code) {
-        return null;
+    public Boolean ValidateNumberCode(String token, String code) {
+        String redisCode = stringRedisTemplate.opsForValue().get(token);
+        return redisCode != null && redisCode.equals(code);
     }
 
     /**
@@ -80,8 +79,8 @@ public class NumberCodeController implements NumberCode {
      */
     @Override
     @ApiOperation(value = "清除数字验证码")
-    public Void ClearNumberCode(String token) {
-        return null;
+    public void ClearNumberCode(String token) {
+        stringRedisTemplate.delete(token);
     }
 
 }
