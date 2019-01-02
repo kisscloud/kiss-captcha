@@ -43,7 +43,7 @@ public class TwoFactorCodeController implements TwoFactorCode {
     }
 
     @Override
-    @ApiOperation(value = "校验谷歌验证码", notes = "验证码有效期为60S")
+    @ApiOperation(value = "校验谷歌验证码", notes = "验证码有效期为60S，两个校验周期")
     public ResultOutput ValidateTwoFactorCode(@RequestParam("secret") String secret, @RequestParam("code") Integer code, Boolean once) {
 
         GoogleAuthenticator gAuth = new GoogleAuthenticator();

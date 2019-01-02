@@ -1,8 +1,13 @@
 spring:
   application:
     name: kiss-captcha
+  redis:
+    host: localhost
+    port: 6379
+
 server:
   port: 8940
+
 eureka:
   client:
     service-url:
