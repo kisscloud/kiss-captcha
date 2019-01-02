@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RestController;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -28,7 +29,7 @@ public class TimerController implements Timer {
 
     @Override
     @ApiOperation(value = "检查计时器")
-    public Boolean checkTimer(String identifier, Integer expired)  {
+    public Boolean checkTimer(String identifier) {
         String value = stringRedisTemplate.opsForValue().get(CryptUtil.md5(identifier));
         return value != null;
     }
@@ -42,7 +43,7 @@ public class TimerController implements Timer {
 
     @Override
     @ApiOperation(value = "获取当天剩余的毫秒数")
-    public Integer getTodayLeftMilliSeconds() throws ParseException {
+    public Integer getTodayLeftMilliSeconds() {
 
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
@@ -50,7 +51,11 @@ public class TimerController implements Timer {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String str = simpleDateFormat.format(c.getTime());
 
-        Long tomorrow = simpleDateFormat.parse(str).getTime();
+        Long tomorrow = null;
+        try {
+            tomorrow = simpleDateFormat.parse(str).getTime();
+        } catch (ParseException ignored) {
+        }
         Long now = new Date().getTime();
 
         return (int) (tomorrow - now);

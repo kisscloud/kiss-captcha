@@ -1,15 +1,16 @@
 package com.kiss.captcha.client;
 
+import com.kiss.captcha.output.ImageCodeOutput;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import output.ResultOutput;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RequestMapping
 public interface ImageCode {
 
     @GetMapping("/imageCode/generate")
-    ResultOutput GenerateImageCode(Integer len, Integer expired, Integer width, Integer height);
+    ImageCodeOutput GenerateImageCode(@RequestParam("len") Integer len, @RequestParam("expired") Integer expired, @RequestParam("width") Integer width, @RequestParam("height") Integer height);
 
     @GetMapping("/imageCode/validate")
-    ResultOutput ValidateImageCode(String token, String code);
+    Boolean ValidateImageCode(@RequestParam("token") String token, @RequestParam("code") String code);
 }

@@ -4,6 +4,7 @@ package com.kiss.captcha.utils;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 import static org.apache.commons.codec.digest.MessageDigestAlgorithms.MD5;
 
@@ -17,5 +18,9 @@ public class CryptUtil {
         }
         md.update(source.getBytes());
         return new BigInteger(1, md.digest()).toString(16);
+    }
+
+    static public String uuid() {
+        return UUID.randomUUID().toString().replace("-", "");
     }
 }

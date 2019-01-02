@@ -39,7 +39,7 @@ public class NumberCodeController implements NumberCode {
             code = String.format("%s%d", code, new Random().nextInt(9));
         }
 
-        String uuid = UUID.randomUUID().toString().replace("-", "");
+        String uuid = CryptUtil.uuid();
 
         NumberCodeOutput numberCodeOutput = new NumberCodeOutput();
         numberCodeOutput.setCode(String.valueOf(code));
