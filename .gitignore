@@ -1,2 +1,4 @@
 .idea
-/target/
+client/target/
+common/target/
+server/target/

@@ -2,8 +2,6 @@ package com.kiss.captcha.controller;
 
 import com.kiss.captcha.client.TwoFactorCode;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
-import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
-import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.http.client.utils.URIBuilder;

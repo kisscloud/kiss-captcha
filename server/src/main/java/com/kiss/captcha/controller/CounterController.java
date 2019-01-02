@@ -1,18 +1,14 @@
 package com.kiss.captcha.controller;
 
 import com.kiss.captcha.client.Counter;
+import com.kiss.captcha.utils.CryptUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.concurrent.TimeUnit;
 
-import static org.apache.commons.codec.digest.MessageDigestAlgorithms.MD5;
 
 @RestController
 @Api(tags = "Counter", description = "计数器操作接口")
@@ -30,11 +26,9 @@ public class CounterController implements Counter {
      */
     @Override
     @ApiOperation(value = "设置计数器")
-    public void setCount(String identifier, Integer times, Integer expired) throws NoSuchAlgorithmException {
+    public void setCount(String identifier, Integer times, Integer expired) {
 
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(identifier.getBytes());
-        String key = new BigInteger(1, md.digest()).toString(16);
+        String key = CryptUtil.md5(identifier);
         if (expired == null) {
             stringRedisTemplate.opsForValue().set(key, String.valueOf(times));
         } else {
@@ -50,11 +44,8 @@ public class CounterController implements Counter {
      */
     @Override
     @ApiOperation(value = "清除计数器")
-    public void clearCount(String identifier) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance(MD5);
-        md.update(identifier.getBytes());
-        String key = new BigInteger(1, md.digest()).toString(16);
-        stringRedisTemplate.delete(key);
+    public void clearCount(String identifier) {
+        stringRedisTemplate.delete(CryptUtil.md5(identifier));
     }
 
     /**
@@ -66,13 +57,10 @@ public class CounterController implements Counter {
      */
     @Override
     @ApiOperation(value = "获取计数器的值")
-    public Integer getCount(String identifier) throws NoSuchAlgorithmException {
+    public Integer getCount(String identifier) {
 
-        MessageDigest md = MessageDigest.getInstance(MD5);
-        md.update(identifier.getBytes());
-        String key = new BigInteger(1, md.digest()).toString(16);
-        String value = stringRedisTemplate.opsForValue().get(key);
-        
+        String value = stringRedisTemplate.opsForValue().get(CryptUtil.md5(identifier));
+
         return value == null ? null : Integer.valueOf(value);
     }
 

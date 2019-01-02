@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
 
 @RequestMapping
 public interface Timer {
@@ -19,5 +20,5 @@ public interface Timer {
     void clearTimer(String identifier) throws NoSuchAlgorithmException;
 
     @GetMapping("/counter/getTodayLeftMilliSeconds")
-    Integer getTodayLeftMilliSeconds();
+    Integer getTodayLeftMilliSeconds() throws ParseException;
 }

@@ -2,16 +2,12 @@ package com.kiss.captcha.controller;
 
 import com.kiss.captcha.client.NumberCode;
 import com.kiss.captcha.output.NumberCodeOutput;
+import com.kiss.captcha.utils.CryptUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -46,15 +42,11 @@ public class NumberCodeController implements NumberCode {
         String uuid = UUID.randomUUID().toString().replace("-", "");
 
         NumberCodeOutput numberCodeOutput = new NumberCodeOutput();
+        numberCodeOutput.setCode(String.valueOf(code));
+        numberCodeOutput.setToken(CryptUtil.md5(scene + uuid));
 
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            md.update((scene + uuid).getBytes());
-            numberCodeOutput.setCode(String.valueOf(code));
-            numberCodeOutput.setToken(new BigInteger(1, md.digest()).toString(16));
-            stringRedisTemplate.opsForValue().set(numberCodeOutput.getToken(), numberCodeOutput.getCode(), expired, TimeUnit.MILLISECONDS);
-        } catch (NoSuchAlgorithmException ignored) {
-        }
+        stringRedisTemplate.opsForValue().set(numberCodeOutput.getToken(), numberCodeOutput.getCode(), expired, TimeUnit.MILLISECONDS);
+
 
         return numberCodeOutput;
     }
@@ -68,7 +60,9 @@ public class NumberCodeController implements NumberCode {
     @Override
     @ApiOperation(value = "校验数字验证码")
     public Boolean ValidateNumberCode(String token, String code) {
+
         String redisCode = stringRedisTemplate.opsForValue().get(token);
+
         return redisCode != null && redisCode.equals(code);
     }
 
